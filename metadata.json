@@ -1,0 +1,8 @@
+{
+  "name": "HyzaLabs - Autonomous Gym Operations",
+  "description": "A futuristic professional website for HyzaLabs, providing custom AI agents and autonomous operating systems for gym businesses.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
