@@ -1,9 +1,28 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Safe access to process.env to prevent crashes on static hosts like Vercel/Hostinger
+const getApiKey = () => {
+  try {
+    return (typeof process !== 'undefined' && process.env?.API_KEY) || '';
+  } catch {
+    return '';
+  }
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export const getOperationalAudit = async (bottleneck: string) => {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    console.error("API Key missing. Audit cannot be performed.");
+    return {
+      strategy: "System offline. Please configure API credentials to receive a custom strategic analysis.",
+      priority: "CRITICAL",
+      potentialImpact: "N/A"
+    };
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
